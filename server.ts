@@ -21,7 +21,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://localhost:5173', 'http://localhost:3000', 'https://localhost:3000'],
+    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ai-thumbnail-generator-mauve.vercel.app/'],
     credentials: true
 }))
 

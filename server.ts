@@ -21,7 +21,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ai-thumbnail-generator-mauve.vercel.app/'],
+    origin: ['http://localhost:5173', 'https://localhost:5173', 'http://localhost:3000', 'https://localhost:3000', 'https://ai-thumbnail-generator-mauve.vercel.app'],
     credentials: true
 }))
 
@@ -30,12 +30,12 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        maxAge: 1000 * 60 * 60 * 24 * 7, 
+        maxAge: 1000 * 60 * 60 * 24 * 7,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'none',
         path: '/'
-    },
+    }, // 7 days
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI as string,
         collectionName: 'sessions'
@@ -51,13 +51,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', AuthRouter);
 app.use('/api/thumbnail', ThumbnailRouter);
 app.use('/api/user', UserRouter);
-
-const isVercel = process.env.VERCEL === '1';
-if (!isVercel) {
-    app.listen(port, () => {
-        console.log(`Server is running at http://localhost:${port}`);
-        // console.log(`Open http://127.0.0.1:${port} in your browser`);
-    });
-}
-
-export default app;
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+    // console.log(`Open http://127.0.0.1:${port} in your browser`);
+});
